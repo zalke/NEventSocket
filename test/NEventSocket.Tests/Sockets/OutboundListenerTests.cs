@@ -1,12 +1,10 @@
 ﻿namespace NEventSocket.Tests.Sockets
 {
+    using NEventSocket.Tests.Fakes;
+    using NEventSocket.Tests.TestSupport;
     using System;
     using System.Net.Sockets;
     using System.Threading.Tasks;
-
-    using NEventSocket.Sockets;
-    using NEventSocket.Tests.Fakes;
-    using NEventSocket.Tests.TestSupport;
 
     using Xunit;
 
@@ -17,7 +15,7 @@
             PreventThreadPoolStarvation.Init();
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public void Disposing_the_listener_completes_the_connections_observable()
         {
             using (var listener = new OutboundListener(0))
@@ -34,7 +32,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task Disposing_the_listener_disposes_any_connected_clients()
         {
             using (var listener = new OutboundListener(0))
@@ -50,7 +48,7 @@
                     socket.Disposed += (o, e) => disposed = true;
                 });
 
-               var client = new FakeFreeSwitchSocket(listener.Port);
+                var client = new FakeFreeSwitchSocket(listener.Port);
 
                 await Wait.Until(() => connected);
                 listener.Dispose();
@@ -59,7 +57,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task Stopping_the_listener_does_not_dispose_any_connected_clients()
         {
             using (var listener = new OutboundListener(0))
@@ -88,7 +86,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task Can_restart_the_listener_after_stopping()
         {
             using (var listener = new OutboundListener(0))
@@ -114,7 +112,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task a_new_connection_produces_an_outbound_socket()
         {
             using (var listener = new OutboundListener(0))
@@ -132,7 +130,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task each_new_connection_produces_a_new_outbound_socket_from_the_Connections_observable()
         {
             const int NumberOfConnections = 3;
@@ -155,7 +153,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task ProblematicSocket_connect_errors_should_not_cause_subsequent_connections_to_fail()
         {
             var connectionsHandled = 0;
@@ -188,7 +186,7 @@
             Assert.True(observableCompleted);
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task IsStarted_is_false_when_initialized()
         {
             using (var listener = new OutboundListener(0))
@@ -197,7 +195,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task IsStarted_is_true_when_started()
         {
             using (var listener = new OutboundListener(0))
@@ -207,7 +205,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task IsStarted_is_false_when_stopped()
         {
             using (var listener = new OutboundListener(0))
@@ -220,7 +218,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task IsStarted_is_false_when_disposed()
         {
             using (var listener = new OutboundListener(0))
@@ -232,7 +230,7 @@
             }
         }
 
-        [Fact(Timeout = 2000)]
+        [Fact]
         public async Task Starting_should_be_idempotent()
         {
             using (var listener = new OutboundListener(0))

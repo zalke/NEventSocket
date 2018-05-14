@@ -18,7 +18,7 @@ namespace NEventSocket.Tests.Sockets
             PreventThreadPoolStarvation.Init();
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task Disposing_the_listener_completes_the_message_observables()
         {
             using (var listener = new OutboundListener(0))
@@ -59,7 +59,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task When_FreeSwitch_disconnects_it_completes_the_message_observables()
         {
             using (var listener = new OutboundListener(0))
@@ -95,7 +95,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task Calling_Connect_on_a_new_OutboundSocket_should_populate_the_ChannelData()
         {
             using (var listener = new OutboundListener(0))
@@ -123,7 +123,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task Calling_Exit_on_a_disconnected_OutboundSocket_should_close_gracefully()
         {
             using (var listener = new OutboundListener(0))
@@ -144,7 +144,7 @@ namespace NEventSocket.Tests.Sockets
                 {
                     freeSwitch.MessagesReceived.FirstAsync(m => m.StartsWith("connect"))
                           .Subscribe(async _ =>
-                              { 
+                              {
                                   await freeSwitch.SendChannelDataEvent();
                                   await Task.Delay(500);
                                   freeSwitch.Dispose();
@@ -158,7 +158,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs, Skip = "Low priority right now")]
+        [Fact(Skip = "Low priority right now")]
         public async Task Calling_Connect_on_a_OutboundSocket_that_was_disconnected_should_throw_OperationCanceledException()
         {
             using (var listener = new OutboundListener(0))
@@ -178,7 +178,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task Channel_listener_should_handle_where_FS_disconnects_before_channelData_event_received()
         {
             using (var listener = new OutboundListener(0))
@@ -192,7 +192,7 @@ namespace NEventSocket.Tests.Sockets
                 using (var freeSwitch = new FakeFreeSwitchSocket(listener.Port))
                 {
                     freeSwitch.MessagesReceived.FirstAsync(m => m.StartsWith("connect")).Subscribe(_ =>
-                        { 
+                        {
                             firstConnectionReceived = true;
                             freeSwitch.Dispose();
                         });
@@ -203,7 +203,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs, Skip = "not working in some test runners")]
+        [Fact(Skip = "not working in some test runners")]
         public async Task Channel_connect_errors_should_not_cause_subsequent_connections_to_fail()
         {
             using (var listener = new OutboundListener(0))
@@ -248,7 +248,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_api()
         {
             using (var listener = new OutboundListener(0))
@@ -288,7 +288,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_command()
         {
             using (var listener = new OutboundListener(0))
@@ -327,7 +327,7 @@ namespace NEventSocket.Tests.Sockets
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_multple_commands()
         {
             using (var listener = new OutboundListener(0))

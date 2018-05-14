@@ -29,7 +29,7 @@ namespace NEventSocket.Util
     /// <summary>
     /// Interlocked support for boolean values
     /// </summary>
-    internal class InterlockedBoolean
+    public class InterlockedBoolean
     {
         private int _value;
 
@@ -75,9 +75,9 @@ namespace NEventSocket.Util
         }
     }
 
-    internal static class InterlockedBooleanExtensions
+    public static class InterlockedBooleanExtensions
     {
-        internal static bool EnsureCalledOnce(this InterlockedBoolean interlockedBoolean)
+        public static bool EnsureCalledOnce(this InterlockedBoolean interlockedBoolean)
         {
             return interlockedBoolean.CompareExchange(true, false);
         }

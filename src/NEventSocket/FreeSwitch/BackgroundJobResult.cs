@@ -14,7 +14,7 @@ namespace NEventSocket.FreeSwitch
     [Serializable]
     public class BackgroundJobResult : BasicMessage
     {
-        internal BackgroundJobResult(EventMessage basicMessage)
+        public BackgroundJobResult(EventMessage basicMessage)
         {
             Headers = basicMessage.Headers;
             BodyText = basicMessage.BodyText;

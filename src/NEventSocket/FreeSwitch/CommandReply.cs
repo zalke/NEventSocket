@@ -16,7 +16,7 @@ namespace NEventSocket.FreeSwitch
     [Serializable]
     public class CommandReply : BasicMessage
     {
-        internal CommandReply(BasicMessage basicMessage)
+        public CommandReply(BasicMessage basicMessage)
         {
             if (basicMessage.ContentType != ContentTypes.CommandReply)
             {
