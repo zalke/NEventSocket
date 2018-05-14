@@ -16,7 +16,7 @@ namespace NEventSocket.FreeSwitch
     [Serializable]
     public class ApiResponse : BasicMessage
     {
-        internal ApiResponse(BasicMessage basicMessage)
+        public ApiResponse(BasicMessage basicMessage)
         {
             if (basicMessage.ContentType != ContentTypes.ApiResponse)
             {

@@ -6,14 +6,13 @@
 
 namespace NEventSocket.FreeSwitch
 {
+    using NEventSocket.Logging;
+    using NEventSocket.Util;
+    using NEventSocket.Util.ObjectPooling;
+
     using System;
     using System.Diagnostics;
     using System.Linq;
-
-    using NEventSocket.Logging;
-    using NEventSocket.Sockets;
-    using NEventSocket.Util;
-    using NEventSocket.Util.ObjectPooling;
 
     /// <summary>
     ///     Represents an Event Message received through the EventSocket
@@ -23,7 +22,7 @@ namespace NEventSocket.FreeSwitch
     {
         private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
 
-        internal EventMessage(BasicMessage basicMessage)
+        public EventMessage(BasicMessage basicMessage)
         {
             if (basicMessage is EventMessage)
             {
@@ -99,7 +98,7 @@ namespace NEventSocket.FreeSwitch
         {
         }
 
-        
+
 
         /// <summary>
         /// Gets the <see cref="EventName"/> of this instance.

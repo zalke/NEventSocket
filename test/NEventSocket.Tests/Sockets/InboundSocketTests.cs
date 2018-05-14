@@ -1,13 +1,12 @@
 ﻿namespace NEventSocket.Tests.Sockets
 {
-    using System;
-    using System.Reactive.Linq;
-    using System.Security;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
-
     using NEventSocket.Tests.Fakes;
     using NEventSocket.Tests.TestSupport;
+    using System;
+    using System.Reactive.Linq;
+
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     using Xunit;
 
@@ -18,7 +17,7 @@
             PreventThreadPoolStarvation.Init();
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task sending_a_correct_password_should_connect()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -35,8 +34,8 @@
                               .Subscribe(async m =>
                               {
                                   authRequestReceived = true;
-                                      await socket.SendCommandReplyOk();
-                                  });
+                                  await socket.SendCommandReplyOk();
+                              });
 
                         socket.MessagesReceived.Where(m => m.Equals("exit"))
                               .Subscribe(
@@ -46,7 +45,7 @@
                                           await socket.SendCommandReplyOk();
                                           await socket.SendDisconnectNotice();
                                       });
-                        
+
                         await socket.Send("Content-Type: auth/request");
                     });
 
@@ -62,7 +61,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public void an_invalid_password_should_throw_an_InboundSocketConnectionFailedException()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -91,7 +90,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public void when_no_AuthRequest_received_it_should_throw_TimeoutException_wrapped_in_InboundSocketConnectionFailedException()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -104,7 +103,7 @@
             }
         }
 
-        [Fact(Timeout = 5000, Skip = "Removing timeouts")]
+        [Fact(Skip = "Removing timeouts")]
         public void when_no_response_to_auth_received_it_should_throw_TimeoutException_wrapped_in_InboundSocketConnectionFailedException()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -123,7 +122,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_api()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -159,7 +158,7 @@
             }
         }
 
-        [Fact(Timeout = 5000, Skip = "Removing timeouts")]
+        [Fact]
         public async Task when_no_api_response_received_it_should_throw_a_TimeOutException()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -210,7 +209,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_command()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -246,7 +245,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task can_send_multiple_commands()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -271,12 +270,12 @@
                                       await socket.SendCommandReplyOk();
                                   });
 
-                       socket.MessagesReceived.FirstAsync(m => m.StartsWith("event"))
-                              .Subscribe(
-                                  async m =>
-                                  {
-                                      await socket.SendCommandReplyError("FAILED");
-                                  });
+                        socket.MessagesReceived.FirstAsync(m => m.StartsWith("event"))
+                               .Subscribe(
+                                   async m =>
+                                   {
+                                       await socket.SendCommandReplyError("FAILED");
+                                   });
 
                         await socket.Send("Content-Type: auth/request");
                     });
@@ -292,7 +291,7 @@
             }
         }
 
-        [Fact(Timeout = 5000, Skip = "Removing timeouts")]
+        [Fact(Skip = "Removing timeouts")]
         public void when_no_command_reply_received_it_should_throw_a_TimeOutException()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -331,7 +330,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task when_the_inbound_socket_is_disposed_it_should_complete_the_observables()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -364,8 +363,8 @@
                 using (var client = await InboundSocket.Connect("127.0.0.1", listener.Port, "ClueCon"))
                 {
                     bool completed = false;
-                    
-                    client.Messages.Subscribe(_ => { },ex => { },() => completed = true);
+
+                    client.Messages.Subscribe(_ => { }, ex => { }, () => completed = true);
 
                     await client.Exit();
                     client.Dispose();
@@ -376,7 +375,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task when_FreeSwitch_disconnects_it_should_complete_the_observables()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -427,7 +426,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task when_a_command_reply_error_is_received_in_response_to_an_application_request_it_should_return_a_failed_ApplicationResult()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -467,7 +466,7 @@
             }
         }
 
-        [Fact(Timeout = TimeOut.TestTimeOutMs)]
+        [Fact]
         public async Task when_a_CHANNEL_EXECUTE_COMPLETE_event_is_returned_it_should_complete_the_Application()
         {
             using (var listener = new FakeFreeSwitchListener(0))
@@ -507,7 +506,7 @@
 
                                           await socket.SendCommandReplyOk();
                                           await socket.Send(channelExecuteComplete);
-                                        });
+                                      });
 
                         await socket.Send("Content-Type: auth/request");
                     });
